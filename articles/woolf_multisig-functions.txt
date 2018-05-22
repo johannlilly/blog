@@ -141,7 +141,7 @@ Now, signatories confirm the transaction with the corresponding internally-gener
 
 ## Securing contract functions with a multisig contract.
 
-[`onlyOwner()`]((https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/ownership/Ownable.sol) from [OpenZeppelin](https://openzeppelin.org/) is a popular modifier that prevent functions from being executed unless the address of `msg.sender` is the `owner`. Because `msg.sender` of a multisig contract is the contract address, we can use this to make the contract owner not a typical wallet, but the multisig contract itself. This way, the function cannot be called unless it is first proposed, confirmed, and executed through a multisig contract, like how the modifier `onlyWallet()` is used within the multisig contract.
+[`onlyOwner()`](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/ownership/Ownable.sol) from [OpenZeppelin](https://openzeppelin.org/) is a popular modifier that prevent functions from being executed unless the address of `msg.sender` is the `owner`. Because `msg.sender` of a multisig contract is the contract address, we can use this to make the contract owner not a typical wallet, but the multisig contract itself. This way, the function cannot be called unless it is first proposed, confirmed, and executed through a multisig contract, like how the modifier `onlyWallet()` is used within the multisig contract.
 
 Because only wallets can sign transactions, you cannot use a multisig contract to create a contract. You can, however, set the multisig contract address as the `owner` at the instantiation of some other contract. If you want to change the existing owner of a contract, you can call `transferOwnership()` and set the address of the new owner as the multisig contract address.
 
@@ -151,7 +151,7 @@ By sending raw transaction data in the `data` input of a transaction, signatorie
 
 ----
 
-*[Johann Lilly](https://bit.ly/jlilly-about-me) serves as Technology Director for [Woolf: Building the First University](https://woolf.university/). You can review Woolf's latest smart contracts on [GitHub](https://github.com/WoolfUniversity/woolf-smart-contracts), the white paper, light paper, and token paper on their [website](https://woolf.university/), or joing the conversation on [Telegram](https://t.me/joinchat/HwlpWUcnfOwfkqhscWh66g).*
+*[Johann Lilly](https://bit.ly/jlilly-about-me) serves as Technology Director for [Woolf: Building the First University](https://woolf.university/). You can review Woolf's latest smart contracts on [GitHub](https://github.com/WoolfUniversity/woolf-smart-contracts), the white paper, light paper, and token paper on the Woolf [website](https://woolf.university/), or join the conversation on [Telegram](https://t.me/joinchat/HwlpWUcnfOwfkqhscWh66g).*
 
 
 
