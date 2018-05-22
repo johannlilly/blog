@@ -6,7 +6,7 @@
 
 ## TL;DR
 
-Multisig wallets are typically used to handle ether and ERC20/ERC223 tokens, but they can also be used to interact with other smart contracts, even ensuring that no function on a contract can be executed unless with multisig approval. By sending raw transaction data in the `data` input of a transaction, signatories can use multisig contracts to execute a function from a separate contract.
+Multisig wallets are typically used to handle ether and ERC20/ERC223 tokens, but they can also be used to interact with other smart contracts, including requiring that a function from another smart contract cannot be executed without multisig approval. By sending raw transaction data in the `data` input of a transaction, signatories can use multisig contracts to execute a function from a separate contract.
 
 **WARNING** We dive into Solidity code for multiple smart contracts. Some experience with Solidity will allow you to get the most from this article, but is not required to follow along.
 
