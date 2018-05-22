@@ -1,0 +1,160 @@
+# Executing functions on other contracts with multi-sig wallets and multi-sig contracts, or, multi-sig functions on Ethereum
+
+> 2018-05-16
+
+## TL;DR
+
+By sending raw transaction data in the `data` input of a transaction, signatories can use a multi-sig contract to execute a function from a separate contract, including (but not limited to) ERC20/ERC223 token contracts.
+
+## Background
+
+### Why multi-sig wallets aren't actually wallets
+
+To refer to a multi-sig (multisignature) wallet as a "wallet" is technically a misnomer. With Ethereum, for example, a multi-sig "wallet" is actually a smart contract. Both a smart contract and a wallet is identified with a unique address: an unsigned 256-bit integer. However, a wallet has a private key, which is required to sign transactions. A wallet's address can be generated with its private key, which is why a wallet's address is also referred to as its public key.
+
+Because a smart contract lacks a private (and is therefore unable to sign transactions), it does not implicitly have the ability to send ether. This means that, by default, if someone sends ether to the address of a smart contract (which is technically a valid address), the ether becomes inaccessible. Developers and investors alike have watched [etherscan.io](https://etherscan.io) in horror as various smart contracts collect ether or tokens, forever lost from the market. This is how the [ERC223]() proposal came about: it is a [clever]() way to cause a transaction to fail if tokens are sent to a contract that can't handle them. But this is only to prevent contracts from being sent tokens. If a smart contract is intentionally going to be used to handle ether or tokens, it needs to have into it that functionality written. More on that later.
+
+> See: [ERC223ReceivingContract](), which includes a tokenFallback function.
+
+### What multi-sig contracts do
+
+Multisig contracts provide an alternate security measure for storing cryptocurrency by requiring multiple authorized signatories to confirm a transaction before ether is sent. I use the word "alternate" because multi-sig contracts don't reduce risk—they reduce a *kind* of risk and replace it with another, so the decision to use such a wallet is a strategy decision according use-case, not something that every crypto user necessarily needs.
+
+#### Traditional use-cases for multi-sig contracts
+
+**The particular risk multi-sig contracts seek to alleviate is the loss of a private key**. With wallets, if you lose access to your private key (including any backup seed, phrase, or password), you lose access to its assets. A multi-sig contract effectively allows multiple wallets to have authority over a single set of assets. If one private key is lost, remaining wallets can still access the set of assets. If a private key is compromised, it alone cannot access the assets.
+
+#### How to get ether from a multi-sig contracts
+
+When a new instance of the contract is deployed to the blockchain (depending on which multi-sig contract you use), you typically specify the public keys that represent which wallets will be authorized signatories, as well as how many of the signatories are required to authorize a proposed transaction. Any wallet can send ether to the contract, but the minimum number of signatories are required to get ether out of the contract.
+
+### Risk when using multi-sig contracts
+
+The trade-off compared to using a traditional wallet is that you take on the risk that your tokens will stolen or permanently locked in the smart contract through hackers discovering an exploit in the contract code. See the parity "wallet" (smart contract) hack. The code for previously-found exploits has been patched for subsequent smart contracts. Every new exploit has been a learning experience. The mistakes of one contract become the education for a series of new contracts, including [GNOSIS](https://github.com/gnosis/MultiSigWallet), [ConsenSys](https://github.com/ConsenSys/MultiSigWallet), and [Mist wallet](https://github.com/ethereum/dapp-bin/blob/master/wallet/wallet.sol). Multiple growing communities are at work to develop the robustness of these technologies. However, **just because a new exploit hasn't been found in newer multi-sig contracts doesn't mean another doesn't exist.** If you are going to use a multi-sig contracts, you must consider the use-case and its associated risk.
+
+## What I need from a multi-sig contract
+
+What if I don't only want to use a multi-sig contract to handle ether transactions? What is I want certain functions to only be executable when approved by a certain number of signatories? Let me give you two examples:
+
+1. I want to transfer ERC20 or ERC223 tokens held by the smart contract with the same security measures afforded to a multi-sig contract handling ether.
+2. I want to override standard rules in a smart contract according to some network vote or in response to a legal requirement.
+
+Both of these examples call for functionality that we at [Woolf](https://woolf.university) want to build into some of our smart contracts. For the first example: because we have an ERC223 token, we want those held in a multi-sig contract like ether. For the second example: part of our company organization involves an entity called the Woolf Reserve. The Woolf [Reserve](https://github.com/WoolfUniversity/woolf-smart-contracts/blob/master/contracts/wallet/Reserve.sol) holds a large number of ERC223 tokens from the moment tokens begin to be sold. The Reserve makes available 0.035% of its token balance available to withdraw by an authorized address ones per month to fund ongoing blockchain development. But what if we discover a bug in our smart contract? We would need to withdraw the entire token balance at once and move it to a new contract version of the Reserve. I call this function `forceWithdraw()`. But I don't want anybody to be able to call this. Typically in Solidity, we use the `adminOnly()` or `onlyOwner()` modifier for this. But I also don't want a single person within the organization to have the power over all those tokens. What I need is for multiple pre-approved signatories and no one else to be able to call this function upon approval—where signatories are separated by business domain: core leadership, management, and legal authority.
+
+## How to execute multi-sig contract functions
+
+I'll use GNOSIS's [MultiSigWallet](https://github.com/gnosis/MultiSigWallet) as an example. We'll look at the following functions:
+
+	addOwner()
+	removeOwner()
+	replaceOwner()
+	changeRequirement()
+	submitTransaction()
+	confirmTransaction()
+	revokeConfirmation()
+	executeTransaction()
+
+`submitTransaction()`, `confirmTransaction()`, `revokeConfirmation()`, and `executeTransaction()` functions can be called by an authorized signatory. `addOwner()`, `removeOwner()`, and `replaceOwner()` can only be executed if the sending address is the multi-sig contract itself, through the modifier, `onlyWallet()`. This is a protection mechanism. If one private key was compromised and the individual had authority to add, remove, and replace owners unilaterally, much of the purpose of a multi-sig contract is defeated. The only way to call a function from the contract itself is for a signatory to **propose** it by calling `submitTransaction()`.
+
+### How to use `submitTransaction()`
+
+The `submitTransaction()` function takes three parameters: destination (type address), value (type uint), and data (type bytes). When you're simply trying to send ether from the smart contract to some address, you enter the address you want to send ether `to`, then how much you want to send (denominated in wei) for `value`, then leave the `data` section blank. But if you're trying to execute a function on the contract like `addOwner()`, it's a different process.
+
+The **to** address is the contract itself. Think of this as an individual submitting a proposal to the contract. The **value** (of ether) is `0` or left blank. The **data** section is where things get interesting. There, you input function information in the form of hex code. Think of this section as the thing that gets executed when a transaction is approved by the required signatories. If you want that function to be `addOwner()`, then the hex code of that function is included with the hex code for the entire function. The same is true for `removeOwner()`, or any other function with the `onlyWallet()` modifier.
+
+In this example, we will submit a new transaction to add an owner (signatory). Here's what that looks like:
+
+	to: 0x0000000000000000000000000000000000000000000000000000000000000001 // multi-sig contract address
+	amount: 0 // amount of ether
+	data: 0x7065cb480000000000000000000000000000000000000000000000000000000000000002 // addOwner(address owner)
+
+You may be wondering about what's going on with the `data` section. It's the hash of the `addOwner()` function, including the parameter being passed to it (in this case, an address to add).
+
+`0x7065cb48` = `addOwner()` hash
+
+`0000000000000000000000000000000000000000000000000000000000000002` = the address `0x0000000000000000000000000000000000000002` with the `0x` removed then converted to a 256-bit value.
+
+This function is being proposed by an existing owner using `submitTransaction()`. Other owners use `confirmTransaction()` to confirm the proposal. The minimum number of required owners, as set in the constructor, must confirm the proposal before the proposed data will be executed. Then, any owner can call `executeTransaction()`. This will cause the multi-sig contract to execute the proposed transaction, including what was in the `data` section.
+
+> Note: executing the transaction proposed to the multi-sig contract causes `msg.sender` to be the contract address, not the address of any of the contract owners (or signatories). This is crucial for executing functions in separate contracts.
+
+### How to get the hash of a function that you want to propose to a multi-sig contract with `submitTransaction()`
+
+I've found that the easiest way is to use a website like [MyEtherWallet](https://myetherwallet.com/). This may seem like a lot of steps, but it becomes pretty rapid.
+
+1. Choose the appropriate network you want to use (i.e. the main network, a test network like Rinkeby or Ropsten). 
+2. Click the **Contracts** tab and make sure you are on the **Interact with Contract** sub-tab.
+3. Type in the contract address of your multi-sig contract. Ignore "Select Existing Contract".
+4. Type in the ABI / JSON Interface of the contract.
+
+> An easy way to get that is to [Remix, the Solidity IDE](https://remix.ethereum.org/) to compile the solidity code for your contract. In Remix, from the **Compile** tab, paste your code, click `Start to compile`, then click `Details`. A window will pop up. Scroll down to the section labeled **ABI**. Copy that value to the clipboard and paste it into corresponding input on MyEtherWallet.
+
+5. In MyEtherWallet, click `Access` to see available functions for the contract.
+6. Select from the dropdown menu the function you want to propose.
+7. Type in the values for any parameters you want to submit with the function, like an `address`, `string`, `uint256`, etc.
+8. Select how would you like to access your wallet, e.g. MetaMask / Mist, Ledger Wallet, TREZOR.
+
+> The wallet doesn't matter, you just need to go through these steps. You won't need to actually execute the transaction.
+
+9. Click `Write`.
+10. Leave `Amount To Send` as `0`. Set some arbitrary gas limit like `300000`.
+11. Click `Generate Transaction`. This doesn't execute the transaction *yet*. It first shows the transaction data for the `Raw Transaction` and `Signed Transaction`.
+12. Scroll through the content of `Raw Transaction` and copy the content associated with the key `data`.
+
+	{
+		"nonce":"0x4c",
+		"gasPrice":"0x098bca5a00",
+		"gasLimit":"0x0493e0",
+		"to":"0x100230E5Fe16dcfEDCA9027D65E5Be182530e722",
+		"value":"0x00",
+		"data":"0x7065cb480000000000000000000000000000000000000000000000000000000000000003",
+		"chainId":4
+	}
+
+> In the above example, the `data` portion to copy is: `0x7065cb480000000000000000000000000000000000000000000000000000000000000003`
+
+13. **Don't select** `Yes, I am sure! Make transaction.` Exit instead.
+
+You now have the data necessary to include when submitting a transaction. By including it in the `submitTransaction()`'s `data` section, you can execute that function through the multi-sig contract.
+
+### Submitting the transaction with MyEtherWallet
+
+You don't have to use MyEtherWallet for submitting a transaction, but if you do, here are the remaining steps to carry it out:
+
+14. Still on the `Contracts` tab, choose the `submitTransaction()` function from the dropdown below `Read / Write Contract`.
+15. Set the multi-sig contract address as the `destination`, `0` as the `value`, then paste the copied data for `data`. We are actually going to submit a transaction this time.
+16. Select `write`
+17. Select `Generate Transaction`.
+18. After reviewing the transaction data, select `Yes, I am sure! Make transaction.` *This may prompt a further confirmation from the wallet you are using.*
+
+
+## How to execute functions on other contracts through a multi-sig contract
+
+Follow the previous steps for executing a function as part of the multi-sig contract.
+
+- Instead of the multi-sig contract address as the `to` parameter, make it the contract you want to call a function from in a multi-sig manner.
+- Instead of using the hash of the multi-sig contract function as the `data` parameter, make it the hash of the function you want to call from an external function, specifically, of the contract address you just used as the `to` parameter.
+
+Just like using MyEtherWallet to get the data from multi-sig contract functions to use in the `data` parameter of `submitTransaction()` (like for `addOwner()`), you can also use it to get the hash of the function you want to call from an external function. Load that contract's address and ABI, and you. similarly can copy the data to use.
+
+Now, signatories confirm the transaction with the corresponding internally-generated ID and execute functions of other contracts through a multi-sig contract.
+
+## Securing contract functions with a multi-sig contract.
+
+`onlyOwner()` from [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/ownership/Ownable.sol) is a popular modifier that prevent functions from being executed unless the address of `msg.sender` is the `owner`. Because `msg.sender` of a multi-sig contract is the contract address, we can use this to make the contract owner not a typical wallet, but the multi-sig contract itself. This way, the function cannot be called unless it is first proposed, confirmed, and executed through a multi-sig contract.
+
+Because only wallets can sign transactions, you cannot use a multi-sig contract to create a contract. You can, however, set the multi-sig contract address as the `owner` at the instantiation of some other contract. If you want to change the existing owner of a contract, you can call `transferOwnership()` and set the address of the new owner as the multi-sig contract address.
+
+## Bringing it all together
+
+By sending raw transaction data in the `data` input of a transaction, signatories can use a multi-sig contract to execute a function from a separate contract, offering an alternative security measure and/or business-logic decision according to the needs of your organization's needs.
+
+----
+
+*[Johann Lilly](https://bit.ly/jlilly-about-me) serves as Technology Director for [Woolf: Building the First University](https://woolf.university/). You can review Woolf's latest smart contracts on [GitHub](https://github.com/WoolfUniversity/woolf-smart-contracts), the white paper, light paper, and token paper on their website(https://woolf.university/), or joing the conversation on [Telegram](https://t.me/joinchat/HwlpWUcnfOwfkqhscWh66g).*
+
+
+
+
+
+

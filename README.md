@@ -1,2 +1,2 @@
 # blog
-I keep most of my documents as text files. I can use GitHub for tracking changes.
+I keep most of my documents as text files. I use GitHub for tracking revisions.
