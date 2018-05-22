@@ -62,7 +62,7 @@ I'll use GNOSIS's [MultiSigWallet](https://github.com/gnosis/MultiSigWallet) as 
 
 The `submitTransaction()` function takes three parameters: `destination` (type address), `value` (type uint), and `data` (type bytes). When you're simply trying to send ether from the smart contract to some address, you enter the address you want to send ether as `to`, then how much you want to send (denominated in wei) for `value`, then leave the `data` section empty. But if you're trying to execute a function from the multisig contract, like `addOwner()`, it's a different process.
 
-To execute a function of the multisig contract that has the `onlyWallet()` modifier, the **to** address must be the contract itself. Think of this as an individual submitting a proposal to the contract. The **value** (of ether) is `0` or left blank. The **data** section is where things get interesting. There, you input function information in the form of hex code. Think of this section as *the thing that gets executed* when a transaction is approved by the required signatories. If you want that function to be `addOwner()`, then the hex code of the `addOwner()` and associated parameters is submitted within the `data` section. The same is true for `removeOwner()` and any other function with the `onlyWallet()` modifier.
+To execute a function of the multisig contract that has the `onlyWallet()` modifier, the `to` address must be the contract itself. Think of this as an individual submitting a proposal to the contract. The `value` (of ether) is `0` or left blank. The`data` section is where things get interesting. There, you input function information in the form of hex code. Think of this section as *the thing that gets executed* when a transaction is approved by the required signatories. If you want that function to be `addOwner()`, then the hex code of the `addOwner()` and associated parameters is submitted within the `data` section. The same is true for `removeOwner()` and any other function with the `onlyWallet()` modifier.
 
 In this example, we will submit a new transaction to add an owner (signatory). Here's what that looks like:
 
@@ -122,10 +122,10 @@ Before you can propose a transaction in the form of a hash, you need to know wha
 		"gasLimit":"0x0493e0",
 		"to":"0x100230E5Fe16dcfEDCA9027D65E5Be182530e722",
 		"value":"0x00",
-		"data":"0x7065cb480000000000000000000000000000000000000000000000000000000000000003",
+		"data":"0x7065cb480000000000000000000000000000000000000000000000000000000000000002",
 		"chainId":4
 	
-> In the above example, the `data` portion to copy is: `0x7065cb480000000000000000000000000000000000000000000000000000000000000003`
+> In the above example, the `data` portion to copy is: `0x7065cb480000000000000000000000000000000000000000000000000000000000000002`
 
 ![Review transaction](02_working-files/review-transaction.png)
 
