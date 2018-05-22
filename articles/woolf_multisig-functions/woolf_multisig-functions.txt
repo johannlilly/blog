@@ -1,6 +1,8 @@
-# Executing functions on other contracts with multisig wallets and multisig contracts, or, multisig functions on Ethereum
+# Executing functions on other contracts with multisig wallets, or, multisig functions on Ethereum
 
 > 2018-05-16
+
+![Safety deposit box](02_working-files/tim-evans-88330-unsplash.jpg)
 
 ## TL;DR
 
@@ -16,11 +18,9 @@ To refer to a multisig (multisignature) wallet as a "wallet" is technically a mi
 
 Because a smart contract lacks a private key (and is therefore unable to sign transactions), it does not implicitly have the ability to send ether. This means that, by default, if someone sends ether to the address of a smart contract (which is technically a valid address), the ether becomes inaccessible. Developers and investors alike have watched [etherscan.io](https://etherscan.io) in horror as various smart contracts collect tokens, forever lost from the market. This is how the [ERC223](https://github.com/ethereum/EIPs/issues/223) proposal came about: it is a [clever](https://github.com/Dexaran/ERC223-token-standard) way to cause a transaction to fail if tokens are sent to a contract that can't handle them. But this is only to prevent sending tokens to contracts that can't handle them. If a smart contract is intentionally going to be used to handle ether or tokens, it needs to have that functionality written into it. Some basic ways to do accomplish this are through the `selfDestruct()` function for ether and [token fallback function](https://github.com/Dexaran/ERC223-token-standard/blob/master/token/ERC223/ERC223_receiving_contract.sol) for tokens.
 
-> See: [ERC223ReceivingContract](), which includes a tokenFallback function.
-
 ### What multisig contracts do
 
-Multisig contracts provide an alternate security measure for storing cryptocurrency by requiring multiple authorized signatories to confirm a proposed transaction before the transaction can execute. I use the word "alternate" because multisig contracts don't reduce risk—they reduce a *kind* of risk and replace it with another, so the decision to use such a wallet is a strategy decision according use-case, not something that every crypto user necessarily needs.
+Multisig contracts provide an alternate security measure for storing cryptocurrency by requiring multiple authorized signatories to confirm a proposed transaction before the transaction can execute. We use the word "alternate" because multisig contracts don't reduce risk—they reduce a *kind* of risk and replace it with another, so the decision to use such a wallet is a strategy decision according use-case, not something that every crypto user necessarily needs.
 
 #### Traditional use-cases for multisig contracts
 
@@ -36,10 +36,10 @@ The trade-off compared to using a traditional wallet is that you take on the ris
 
 ## What we need from a multisig contract at Woolf
 
-What if I don't only want to use a multisig contract to handle ether transactions? What is I want certain functions to only be executable when approved by a certain number of signatories? Let me give you two examples:
+What if we don't only want to use a multisig contract to handle ether transactions? What is we want certain functions to only be executable when approved by a certain number of signatories? Let me give you two examples:
 
-1. I want to transfer ERC20 or ERC223 tokens held by the smart contract with the same security measures afforded to a multisig contract handling ether.
-2. I want to override standard rules in a smart contract according to some network vote or in response to a legal requirement.
+1. We want to transfer ERC20 or ERC223 tokens held by the smart contract with the same security measures afforded to a multisig contract handling ether.
+2. We want to override standard rules in a smart contract according to some network vote or in response to a legal requirement.
 
 Both of these examples call for functionality that we at [Woolf](https://woolf.university) want to build into some of our smart contracts. For the first example: because we have an [ERC223 token](https://themerkle.com/what-is-the-erc223-token-standard/), we want those held in a multisig contract like ether. For the second example: part of our company organization involves an entity called the Woolf Reserve. The Woolf [Reserve](https://github.com/WoolfUniversity/woolf-smart-contracts/blob/master/contracts/wallet/Reserve.sol) holds a large number of ERC223 tokens from the moment tokens begin to be sold. The Reserve makes available 0.035% of its token balance available to withdraw by an authorized address once per month to fund ongoing blockchain development. But what if we discover a bug in our smart contract? We would need to withdraw the entire token balance at once and move it to a new contract version of the Reserve. We call this function `forceWithdraw()`. But we don't want anybody to be able to call this. Typically in Solidity, we use the `adminOnly()` or [`onlyOwner()`](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/ownership/Ownable.sol) modifier for this. But we also don't want a single person within the organization to have the power over all those tokens. What we need is for multiple pre-approved signatories and no one else to be able to call this function upon approval, where signatories are separated by business domain: core leadership, management, and legal authority.
 
@@ -99,7 +99,7 @@ Before you can propose a transaction in the form of a hash, you need to know wha
 ![Compile code](./02_working-files/compile.png)
 ![Copy ABI](./02_working-files/abi.png)
 
-5. In MyEtherWallet, click `Access` to see available functions for the contract.
+5. Once you have inputted the contract address and the ABI on MyEtherWallet, click `Access` to see available functions for the contract.
 6. Select from the dropdown menu the function you want to propose.
 7. Type in the values for any parameters you want to submit with the function, like an `address`, `string`, `uint256`, etc.
 
@@ -117,7 +117,6 @@ Before you can propose a transaction in the form of a hash, you need to know wha
 11. Click `Generate Transaction`. This doesn't execute the transaction *yet*. It first shows the transaction data for the `Raw Transaction` and `Signed Transaction`.
 12. Scroll through the content of `Raw Transaction` and copy the content associated with the key `data`.
 
-	{
 		"nonce":"0x4c",
 		"gasPrice":"0x098bca5a00",
 		"gasLimit":"0x0493e0",
@@ -125,8 +124,7 @@ Before you can propose a transaction in the form of a hash, you need to know wha
 		"value":"0x00",
 		"data":"0x7065cb480000000000000000000000000000000000000000000000000000000000000003",
 		"chainId":4
-	}
-
+	
 > In the above example, the `data` portion to copy is: `0x7065cb480000000000000000000000000000000000000000000000000000000000000003`
 
 ![Review transaction](02_working-files/review-transaction.png)
@@ -171,7 +169,7 @@ By sending raw transaction data in the `data` input of a transaction, signatorie
 
 ----
 
-*[Johann Lilly](https://bit.ly/jlilly-about-me) serves as Technology Director for [Woolf: Building the First University](https://woolf.university/). You can review Woolf's latest smart contracts on [GitHub](https://github.com/WoolfUniversity/woolf-smart-contracts), the white paper, light paper, and token paper on the Woolf [website](https://woolf.university/), or join the conversation on [Telegram](https://t.me/joinchat/HwlpWUcnfOwfkqhscWh66g).*
+*[Johann Lilly](https://bit.ly/jlilly-about-me) serves as Technology Director for [Woolf: Building the First University](https://woolf.university/). You can review Woolf's latest smart contracts on [GitHub](https://github.com/WoolfUniversity/woolf-smart-contracts), the white paper, light paper, and token paper on the Woolf [website](https://woolf.university/), or join the conversation on [Telegram](http://bit.ly/WoolfTelegram).*
 
 
 
