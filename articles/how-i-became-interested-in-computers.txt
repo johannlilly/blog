@@ -1,0 +1,19 @@
+# How I became interested in computers
+
+The first computer I used was the Mac II. I was about four years old. I don't remember where, but in whichever program or school function I was, basic typing skills were encouraged from a young age. At 12, I gained access to a Dell Inspiron 4210 laptop. It became my playground. When my 40GB HDD was running low, I examined Windows XP root files, inferring which were unnecessary by often cryptic names. I was often wrong, summoning the Blue Screen Of Death. Friends would reinstall Windows, and the cycle would begin anew. Eventually, I learned what probably shouldn't be deleted, as well as what *definitely* shouldn't be deleted, with some console commands along the way.
+
+High school introduced me to other computer geeks. They taught me how to use Tor to access the dark web. MySpace let me experiment with HTML and CSS. I explicitly refused to use a Facebook account when I couldn't customize its markup. We used PortableBox and proxys to subvert school network restrictions, theorizing of a senior prank to password-lock the BIOS of the library computers. We held LAN parties and ranked the top RGB lighting configurations in our builds sourced through NewEgg. We launched private forums to anonymously express teenage angst and posted edgy digital artwork to DeviantArt. We shared programs with 256 MB USB drives and installed unreleased versions of Windows someone's uncle had shared... or something. We were were kids.
+
+After high school, I started working. I didn't realize I could build on this experience and turn it into a career -- I didn't have an influence in my life to tell me it was possible. The only memory I have of family members with regard to computers is anger--anger for me spending too much time on them, and the incitement of fear upon the expression of that anger. I thought computers weren't something you could "do" as a job. I didn't know any better, and I didn't ask.
+
+In college, I didn't know there was such a thing as a Computer Science degree. I didn't know there were many types of jobs, for that matter. I primarily envisioned the standard lawyer, teacher, and doctor. I didn't care for any of those, but my closest friends from high school said they planned to go Pre-Med, so I did, too. All this time, I was building basic websites by experimenting with HTML, CSS, and JavaScript without realizing they could relate to a job. My plan was to attend medical school and become a Navy Flight Surgeon, despite no interest in my coursework. A program manager handling interns at the Cleveland Clinic told me if I had no interest in medicine, I wouldn't make it through medical school.
+
+----
+
+This story is part of a broader narrative of how I became a software engineer:
+
+- How I became interested in computers
+- How I became a web developer
+- How I became a full-stack developer
+- How I became a technical project manager
+- How I became a data scientist (as a software engineer)
