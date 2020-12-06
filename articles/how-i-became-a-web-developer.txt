@@ -1,1 +1,19 @@
 # How I became a web developer
+
+*I didn't have a CS degree and I didn't go through a bootcamp.*
+
+**TL;DR** I used LinkedIn Learning pathways to learn enough web development to start an unpaid internship. I worked there until I had enough skills to justify being paid.
+
+----
+
+In early 2015, I was working overnight shifts at a substance abuse recovery center―something between inpatient treatment and a halfway house. I was connected to the position by an old colleague from a foster care emergency youth shelter, where I had been a support worker and volunteer mentor. These 12-hour shifts included transporting clients, ensuring access to prescribed medication, collecting samples for urinalysis, and monitoring client activity throughout the night―as well as calling the police upon a breach or desertion. I usually worked between 48 and 72 hours per week, but quickly realized that no matter the effort, I had no path for career advancement. Even more disquieting: I had no trade or skill that merited it.
+
+Already facing student debt, I considered careers which didn't require further formal education: programmer and auto mechanic. At least, those are the two which came to mind. I already had an interest in web development, so I researched resources to learn. Hours into my overnight shifts, roughly around 1:30 AM, clients at the facility were usually asleep and the bulk of my responsibilities complete. Besides personnel checks of the dorms every 45 minutes, I was mostly left to my own devices. Instead of watching Netflix, I used [Codecademy](https://www.codecademy.com) to practice HTML, CSS, and JavaScript.
+
+The more I learned, the more questions I learned to ask. I sought ways to supercharge my progress. I took meticulous notes on the 10+ hour vlog of a student's experience at Hack Reactor to determine if it would be worth taking on more debt, but his conclusion was to first self-teach using online resources while building projects which you can demonstrate to employers. So that's what I did. I created a [GitHub](https://github.com/johannlilly) profile and followed web development pathways on [Lynda.com](https://www.lynda.com). I networked in the community with [Meetup](https://www.meetup.com), and eventually landed an interview for a local web development marketing firm. But it wasn't enough. The owner told me I didn't have enough skills to be worth hiring... but I could work as an unpaid intern. The trouble was, I needed a source of income. So, we decided on a 2-day per week schedule. Concurrently, I secured a part-time role as a shop hand for an aluminum fabricator for the remaining days. When I wasn't working, I was studying.
+
+Work, sweat, study, eat, sleep, repeat. Months went by before I had skills strong enough to merit hiring, but eventually, I made it. $12.50/hour seemed low for the industry, but I didn't have much leverage for negotiation. It was the most I'd ever been paid, and I was grateful. I left the workshop and became a full-time web developer. It wasn't a glamorous pathway—it lacked the marketing budget of a coding bootcamp—but it worked. As well, it laid the foundation for my career. An unpaid internship isn't a reality for many.
+
+It may mean you need to study on your own longer and publish more projects to GitHub before you'll be hired, but it's possible.
+
+Years later, I still have faint scars on my hands from work at the fabrication shop and elsewhere. Seeing them as I code reminds me of the journey.

@@ -7,4 +7,3 @@ How I became a software engineer:
 - How I became a full-stack developer
 - How I became a technical project manager
 - How I became a data scientist (as a software engineer)
-  
