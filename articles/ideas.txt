@@ -2,3 +2,17 @@ ideas
 
 - What I learned in Amazon's Senior Technical Program Manager interview
 - Why I failed ____ interview
+- How I became a data scientist (as a full-stack developer)
+- How a software engineer can become a data scientist (how to become a data scientist as a software engineer)
+- How I became a project manager (as a software engineer)
+- Why software engineers should study data science
+- Why program managers should study data science
+- Why you shouldn't switch companies
+- Degree vs certificate
+- Don't wait until you're 30
+- What project management tools should I learn?
+- Don't wait until you're 30
+- Why job descriptions aren't enough (e.g. what kind of full-stack developer are you?)
+- Top questions I ask recruiters
+- Top questions I ask in an interview
+- What I tell recruiters
