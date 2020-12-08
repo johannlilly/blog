@@ -1,1 +1,19 @@
 # How I became a technical project manager
+
+It wasn't intentional, but I was prepared.
+
+**TL;DR** With a strong first impression, technical expertise, leadership experience, and project management qualifications, I was well positioned to take on the responsibility to lead a cloud migration when the opportunity arose.
+
+> Cognizant's internal classification system was fairly abstruse. The job listing was for a "UI Architect." My technical interview was entirely in React. My HR designation was "Manager – Projects," and my internal classification was "Lead Engineer."
+
+At the beginning of 2020, fresh out of the US Army's Ranger and Airborne Schools, Cognizant brought me on board as a Lead Engineer for one of their Fortune 500 client's projects. The project was sold before I was hired, and I was staffed to fill a slot in their schema.
+
+The first few weeks on the project were disorganized and frenzied. From changing offices every few days to changing teams and assignments, a sense of relaxed adaptability went far. Two or three weeks in, the technology director came to me and requested I lead a cloud migration of applications supporting the client's marketing division. As a developer, this had nothing to do with my function. This had nothing to do with my expectations when I was first interviewed and hired. The closest connection I can infer was that the VMs in need of migration were running web applications (my specialty), and I was assigned to the same department: Creative Marketing.
+
+If the director had already reviewed my resume, he would have read of ancillary project management experience in my previous position: interviewing, hiring, and managing a small group of remote developers to work alongside me to build cloud-native full-stack web applications, or seen certifications from the Project Management Institute. Maybe he liked the military experience. I have no idea. I just knew my response: I'd make it happen.
+
+Massive ambiguity existed for this project. The instructions went something like this: we don't know what work has been performed thus far, only that some team in some office has did some work at some point in time. We don't know who was on that team or if they're still with the company. If we can identify anyone, we need to perform knowledge transfer (KT) in case they are released from the company. Then, we need to pick up where they left off and implement the migration to GCP before the client receives a massive bill for hosting contract renewal in three months. Go.
+
+I set to work gathering any information I could throughout the client's organization. For the first week or so, I went through every client repository, searching ```README``` files for anything which might suggest relevance to the project based on the few details I was given.
+
+ but we need to identify  The scope of the project was for me to leverage the other developers on the Creative Marketing team to identify existing resources and work performed on the migration thus far, then see it to completion.
