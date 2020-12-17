@@ -1,0 +1,25 @@
+# Security-Driven Development
+
+Tools for consideration:
+
+- Static application security testing (SAST)
+  - Commercial: Fortify, AppScan, Checkmarx
+  - Open Source: FindSecBugs, Brakeman, PMD
+- Dynamic application security testing (DAST)
+  - Commercial: WebInspect, Burp, AppSpider
+  - Open Source: ZAP
+- Interactive application security testing (IAST)
+  - Commercial: Contrast, Seeker
+
+DevSecOps tools:
+
+- FindBugs
+- ZAP
+- sqlmap
+- OpenVAS
+- Recon-ng
+- OWASP Glue
+
+Libraries which integrate into the CI/CD pipleine in a similar way to TDD tools
+
+- Retire.js - detect use of version with known vulnerabilities.
