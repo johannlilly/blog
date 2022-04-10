@@ -23,3 +23,25 @@ DevSecOps tools:
 Libraries which integrate into the CI/CD pipleine in a similar way to TDD tools
 
 - Retire.js - detect use of version with known vulnerabilities.
+
+Automated security testing
+- Arachni
+- Nikto
+- ZAP
+
+Builds
+
+- Keep builds under 5 minutes, including all security tests, or split into parallel builds (fast, slow, nightly)
+
+CI/CD pipeline
+
+- Travis CI
+- Jenkins
+- (just need to support docker containers)
+  - gruyere
+  - gauntlt
+  - cucumber
+
+JavaScript library
+- pentest-tool-lite
+- dirW4lker.js

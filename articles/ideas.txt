@@ -1,5 +1,7 @@
 ideas
 
+## Tech
+
 - What I learned in Amazon's Senior Technical Program Manager interview
 - Why I failed ____ interview
 - How I became a data scientist (as a full-stack developer)
@@ -8,12 +10,24 @@ ideas
 - Why software engineers should study data science
 - Why program managers should study data science
 - Why you shouldn't switch companies
-- Degree vs certificate
-- Don't wait until you're 30
 - What project management tools should I learn?
-- Don't wait until you're 30
 - Why job descriptions aren't enough (e.g. what kind of full-stack developer are you?)
 - Top questions I ask recruiters
 - Top questions I ask in an interview
+  - (if multiple slots are open) how many people have you staffed for this position?
+  - what is your placement rate for this client?
+
+## Work
+
+- Don't wait until you're 30
 - What I tell recruiters
 - What I should have done instead of start a podcast (Medium)
+- My first job (neighbor: $3/hour)
+
+## Education
+
+- Degree vs certificate
+
+## Economics
+
+- realities and solutions regarding intellectual property in a global economy

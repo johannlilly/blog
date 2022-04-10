@@ -1,0 +1,11 @@
+AI Modeling Algorithms
+
+Decision Tree, Support Vector Machine, Logistic Regression, and Neural Network
+Bagged trees, random forests, XGBoost
+
+Machine Learning Algorithms (supervised, unsupervised, semi-supervised, reinforcement)
+
+- Binary Logistic Regression
+- Decision trees
+- k-nearest neighbor
+- K-mean clustering
